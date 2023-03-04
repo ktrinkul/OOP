@@ -1,5 +1,0 @@
-﻿  VSE.cpp
-C:\Users\mgory\OneDrive\Рабочий стол\univer\2_sem\OOP\goryacheva_e_m\labs\1.Rational\VSE\VSE\VSE.cpp(194,20): warning C4244: =: преобразование "double" в "int32_t", возможна потеря данных
-C:\Users\mgory\OneDrive\Рабочий стол\univer\2_sem\OOP\goryacheva_e_m\labs\1.Rational\VSE\VSE\VSE.cpp(195,20): warning C4244: =: преобразование "double" в "int32_t", возможна потеря данных
-C:\Users\mgory\OneDrive\Рабочий стол\univer\2_sem\OOP\goryacheva_e_m\labs\1.Rational\VSE\VSE\VSE.cpp(116): warning C4715: Rational::operator bool: значение возвращается не при всех путях выполнения
-  VSE.vcxproj -> C:\Users\mgory\OneDrive\Рабочий стол\univer\2_sem\OOP\goryacheva_e_m\labs\1.Rational\VSE\x64\Debug\VSE.exe
