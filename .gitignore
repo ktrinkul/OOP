@@ -4,5 +4,5 @@ CMakeCache.txt
 CMakeFiles/
 Makefile
 cmake_install.cmake
-vcpkg/
-build/
+goryacheva_e_m/vcpkg/
+goryacheva_e_m/build/
