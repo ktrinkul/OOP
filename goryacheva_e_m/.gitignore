@@ -1,3 +1,8 @@
+CMakeLists.txt.user
+CMakeCache.txt
+*.a
+CMakeFiles/
+Makefile
+cmake_install.cmake
 vcpkg/
-labs/test/
-build
+build/
