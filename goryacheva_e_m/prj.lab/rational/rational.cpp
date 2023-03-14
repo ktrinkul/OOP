@@ -9,14 +9,15 @@ int32_t gcd(int32_t a, int32_t b) {
 
 Rational::Rational(int32_t num) noexcept : num_(num), den_(1) {};
 
-Rational::Rational(int32_t num, int32_t denom) num_(num), den_(denom) {};
+Rational::Rational(int32_t num, int32_t denom) : num_(num), den_(denom) {};
 
 
 Rational Rational::operator-() const noexcept {
-    return(-num_);
+    return Rational(-num_, denom());
 };
 Rational::operator bool() const noexcept {
     if (num_ == 0) return false;
+    return true;
 };
 
 bool Rational::operator==(const Rational& rhs) const noexcept {
@@ -84,7 +85,6 @@ std::istream& operator>>(std::istream& istrm, Rational& rhs) noexcept {
 
 
 std::ostream& Rational::write_to(std::ostream& ostrm) const noexcept {
-    //if (num_ == 0 || den_ == 1) ostrm << num_;
     ostrm << num_ << delimiter_ << den_;
     return ostrm;
 };
