@@ -1,6 +1,9 @@
 #define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
-#include <C:\Users\mgory\vcpkg\buildtrees\doctest\src\v2.4.9-a2b8cf4cf7.clean\doctest\doctest.h>
-#include <C:\Users\mgory\OneDrive\Рабочий стол\univer\2_sem\OOP\goryacheva_e_m\prj.lab\rational\include\rational\rational.hpp>
+//#include <C:\Users\mgory\vcpkg\buildtrees\doctest\src\v2.4.9-a2b8cf4cf7.clean\doctest\doctest.h>
+//#include <C:\Users\mgory\OneDrive\Рабочий стол\univer\2_sem\OOP\goryacheva_e_m\prj.lab\rational\include\rational\rational.hpp>
+
+#include <doctest/doctest.h>
+#include <rational/rational.hpp>
 
 TEST_CASE("[rational] - Rational ctor") {
   CHECK(Rational() == Rational(0, 1));
