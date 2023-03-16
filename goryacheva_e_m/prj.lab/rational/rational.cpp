@@ -16,6 +16,7 @@ Rational::Rational(int32_t num, int32_t denom) {
         num_ = num;
         den_ = denom;
     }
+    normalize();
 };
 
 
@@ -72,7 +73,7 @@ Rational& Rational::operator/=(const Rational& rhs) {
     return *this;
 };
 
-void Rational::normalize() noexcept {
+/*void Rational::normalize() noexcept {
     int32_t g = gcd(abs(num_), den_);
     num_ /= g;
     den_ /= g;
@@ -80,7 +81,25 @@ void Rational::normalize() noexcept {
         num_ = -num_;
         den_ = -den_;
     }
-};
+};*/
+
+void Rational::normalize() noexcept {
+  if(num() * 1ll * denom() < 0) {
+    num_ = -abs(num());
+    den_ = abs(denom());
+  } else {
+    num_ = abs(num());
+    den_ = abs(denom());
+  }
+
+  if (num_ == 0) {
+    den_ = 1;
+  } else {
+    int32_t gcd = std::gcd(std::abs(num()), denom());
+    num_ /= gcd;
+    den_ /= gcd;
+  }
+}
 
 
 std::ostream& operator<<(std::ostream& ostrm, const Rational& rhs) noexcept {
@@ -112,3 +131,4 @@ std::istream& Rational::read_from(std::istream& istrm) noexcept {
     return istrm;
 
 };
+
