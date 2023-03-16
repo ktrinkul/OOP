@@ -9,7 +9,14 @@ int32_t gcd(int32_t a, int32_t b) {
 
 Rational::Rational(int32_t num) noexcept : num_(num), den_(1) {};
 
-Rational::Rational(int32_t num, int32_t denom) : num_(num), den_(denom) {};
+Rational::Rational(int32_t num, int32_t denom) {
+    if (denom == 0)
+        throw std::invalid_argument("Division by zero");
+    else {
+        num_ = num;
+        den_ = denom;
+    }
+};
 
 
 Rational Rational::operator-() const noexcept {
