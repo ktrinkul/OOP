@@ -1,5 +1,7 @@
 #include <rational/rational.hpp>
 
+#include <stdio.h>
+
 int32_t gcd(int32_t a, int32_t b) {
     if (b == 0) {
         return a;
@@ -21,7 +23,7 @@ Rational::Rational(int32_t num, int32_t denom) {
 
 
 Rational Rational::operator-() const noexcept {
-    return Rational(-num_, denom());
+    return Rational( (-1)*num_, den_);
 };
 Rational::operator bool() const noexcept {
     if (num_ == 0) return false;
@@ -114,13 +116,15 @@ std::ostream& Rational::write_to(std::ostream& ostrm) const noexcept {
     ostrm << num_ << delimiter_ << den_;
     return ostrm;
 };
+
 std::istream& Rational::read_from(std::istream& istrm) noexcept {
-    double num;
+    int32_t num;
     char delimiter;
-    double den;
+    int32_t den;
     istrm >> num >> delimiter >> den;
-    if (istrm.good()) {
-        if (Rational::delimiter_ == '/' && den != 0) {
+    //istrm >> std::scanf((%d%s%d), num, delimiter, den);
+    if (istrm.eof() || istrm.good()) {
+        if (Rational::delimiter_ == delimiter && den > 0) {
             num_ = num;
             den_ = den;
         }

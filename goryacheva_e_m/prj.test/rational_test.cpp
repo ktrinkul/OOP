@@ -5,6 +5,39 @@
 
 #include <sstream>
 
+TEST_CASE("[rational] - Operator comparison") {
+
+    CHECK((Rational(3, 2) != Rational(31, 14)) == true);
+    CHECK((Rational() + Rational() != Rational(31, 14)) == true);
+    CHECK((Rational() + Rational(29, 41) != Rational()) == true);
+    CHECK((Rational(3, 2) != Rational(3, 2)) == false);
+    CHECK((Rational() + Rational() != Rational()) == false);
+    CHECK((Rational() + Rational(29, 41) != Rational(29, 41)) == false);
+
+    CHECK((Rational(3, 4) > Rational(1, 14)) == true);
+    CHECK((Rational(5, 6) > Rational()) == true);
+    CHECK((Rational(1, 14) > Rational(3, 4)) == false);
+    CHECK((Rational() > Rational(5, 6)) == false);
+
+    CHECK((Rational(1, 14) < Rational(3, 4)) == true);
+    CHECK((Rational() < Rational(5, 6)) == true);
+    CHECK((Rational(3, 4) < Rational(1, 14)) == false);
+    CHECK((Rational(5, 6) < Rational()) == false);
+
+    CHECK((Rational() >= Rational(0, 1)) == true);
+    CHECK((Rational(3, 4) >= Rational(1, 14)) == true);
+    CHECK((Rational(5, 6) >= Rational()) == true);
+    CHECK((Rational(1, 14) >= Rational(3, 4)) == false);
+    CHECK((Rational() >= Rational(5, 6)) == false);
+
+    CHECK((Rational() <= Rational(0, 1)) == true);
+    CHECK((Rational(1, 14) <= Rational(3, 4)) == true);
+    CHECK((Rational() <= Rational(5, 6)) == true);
+    CHECK((Rational(3, 4) <= Rational(1, 14)) == false);
+    CHECK((Rational(5, 6) <= Rational()) == false);
+
+}
+
 TEST_CASE("[rational] - Rational ctor") {
   CHECK(Rational() == Rational(0, 1));
   CHECK(Rational(3) == Rational(3, 1));
@@ -132,7 +165,7 @@ TEST_CASE("[rational] - I/O") {
     Rational r;
     std::stringstream sstrm;
 
-    /*SUBCASE("Extra spaces on begin") {
+    SUBCASE("Extra spaces on begin") {
       sstrm.str(" 1/3");
       sstrm >> r;
       CHECK(sstrm.rdstate() == std::ios_base::eofbit);
@@ -225,11 +258,11 @@ TEST_CASE("[rational] - I/O") {
 
     sstrm.clear();
 
-    SUBCASE("Denominator is trash") {
-      sstrm.str("3/*");
-      sstrm >> r;
-      CHECK(sstrm.fail());
-      CHECK(!sstrm.bad());
+    SUBCASE("Denominator is null") {
+        sstrm.str("3/0");
+        sstrm >> r;
+        CHECK(sstrm.fail());
+        CHECK(!sstrm.bad());
     }
 
     sstrm.clear();
@@ -260,7 +293,6 @@ TEST_CASE("[rational] - I/O") {
     }
 
     sstrm.clear();
-    */
 
     SUBCASE("Denominator is negative") {
       sstrm.str("3/-2");
@@ -270,5 +302,6 @@ TEST_CASE("[rational] - I/O") {
     }
 
   }
+
 }
 
