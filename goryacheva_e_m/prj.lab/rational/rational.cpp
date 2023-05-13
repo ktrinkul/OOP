@@ -1,7 +1,5 @@
 #include <rational/rational.hpp>
 
-#include <stdio.h>
-
 int32_t gcd(int32_t a, int32_t b) {
     if (b == 0) {
         return a;
@@ -121,8 +119,8 @@ std::istream& Rational::read_from(std::istream& istrm) noexcept {
     int32_t num;
     char delimiter;
     int32_t den;
-    istrm >> num >> delimiter >> den;
-    //istrm >> std::scanf((%d%s%d), num, delimiter, den);
+    istrm >> num >> std::noskipws >> delimiter >> std::noskipws >> den;
+    
     if (istrm.eof() || istrm.good()) {
         if (Rational::delimiter_ == delimiter && den > 0) {
             num_ = num;
