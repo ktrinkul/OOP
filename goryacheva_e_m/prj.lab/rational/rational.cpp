@@ -11,7 +11,7 @@ Rational::Rational(int32_t num) noexcept : num_(num), den_(1) {};
 
 Rational::Rational(int32_t num, int32_t denom) {
     if (denom == 0)
-        throw std::invalid_argument("Division by zero");
+        throw "Division by zero: \n";
     else {
         num_ = num;
         den_ = denom;
@@ -67,34 +67,33 @@ Rational& Rational::operator-=(const Rational& rhs) noexcept {
 };
 
 Rational& Rational::operator/=(const Rational& rhs) {
-    num_ *= rhs.denom();
-    den_ *= rhs.num();
-    normalize();
-    return *this;
+    if (rhs.num() != 0) {
+        int32_t tmp = rhs.num();
+        num_ *= rhs.denom();
+        den_ *= tmp;
+        normalize();
+        return *this;
+    }
+    else {
+        throw "Determinator is not correct: \n";
+    }
 };
 
-/*void Rational::normalize() noexcept {
-    int32_t g = gcd(abs(num_), den_);
-    num_ /= g;
-    den_ /= g;
-    if (num_ < 0 && den_ < 0) {
-        num_ = -num_;
-        den_ = -den_;
-    }
-};*/
 
 void Rational::normalize() noexcept {
   if(num() * 1ll * denom() < 0) {
     num_ = -abs(num());
     den_ = abs(denom());
-  } else {
+  } 
+  else {
     num_ = abs(num());
     den_ = abs(denom());
   }
 
   if (num_ == 0) {
     den_ = 1;
-  } else {
+  } 
+  else {
     int32_t gcd = std::gcd(std::abs(num()), denom());
     num_ /= gcd;
     den_ /= gcd;
@@ -119,12 +118,11 @@ std::istream& Rational::read_from(std::istream& istrm) noexcept {
     int32_t num;
     char delimiter;
     int32_t den;
-    istrm >> num >> std::noskipws >> delimiter >> std::noskipws >> den;
+    istrm >> std::ws >> num >> std::noskipws >> delimiter >> std::noskipws >> den;
     
     if (istrm.eof() || istrm.good()) {
         if (Rational::delimiter_ == delimiter && den > 0) {
-            num_ = num;
-            den_ = den;
+            *this = Rational(num, den);
         }
         else {
             istrm.setstate(std::ios_base::failbit);
