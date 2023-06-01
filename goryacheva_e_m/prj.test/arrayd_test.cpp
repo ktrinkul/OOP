@@ -6,5 +6,15 @@
 #include <sstream>
 
 TEST_CASE("_") {
+    ArrayD r;
+    std::stringstream sstrm;
 
+    SUBCASE("Trash") {
+        sstrm.str("-5");
+        sstrm >> r;
+        CHECK(sstrm.fail());
+        CHECK(!sstrm.bad());
+    }
+
+    sstrm.clear();
 }

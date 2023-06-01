@@ -16,6 +16,7 @@ class Rational {
     Rational(const int32_t num) noexcept ;
     Rational(const int32_t num, const int32_t denom);
     ~Rational() = default;
+
     Rational& operator=(const Rational&) = default;
     Rational& operator=(Rational&&) = default;
 

@@ -1,6 +1,14 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\prj.lab",
+    "\\prj.lab\\arrayd",
+    "\\prj.lab\\arrayd\\include",
+    "\\prj.lab\\arrayd\\include\\arrayd",
+    "\\prj.lab\\rational",
+    "\\prj.lab\\rational\\include",
+    "\\prj.lab\\rational\\include\\rational"
   ],
+  "SelectedNode": "\\prj.lab\\arrayd\\include\\arrayd\\arrayd.hpp",
   "PreviewInSolutionExplorer": false
 }
