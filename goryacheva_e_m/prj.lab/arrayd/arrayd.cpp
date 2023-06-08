@@ -43,7 +43,6 @@ ArrayD& ArrayD::operator=(const ArrayD& other) {
 	return *this;
 }
 
-
 ArrayD::ArrayD(std::initializer_list<double> lst) :ArrayD(static_cast<int>(lst.size())) {
 	std::copy(lst.begin(), lst.end(), arr);
 	this->size_ = lst.size();
