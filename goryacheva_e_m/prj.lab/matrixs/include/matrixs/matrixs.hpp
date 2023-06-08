@@ -9,6 +9,9 @@
 #include <iterator>
 #include <vector>
 
+#include <string>
+#include <tuple>
+
 class MatrixS {
 public:
     using SizeType = std::tuple<std::ptrdiff_t, std::ptrdiff_t>;
