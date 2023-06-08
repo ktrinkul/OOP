@@ -1,6 +1,6 @@
 #pragma once
-#ifndef RATIONAL_ARRAYD_HPP_20230215
-#define RATIONAL_RARRAYD_HPP_20230215
+#ifndef ARRAYD_ARRAYD_HPP_20230215
+#define ARRAYD_ARRAYD_HPP_20230215
 
 #include <cstddef>
 #include <iostream>
