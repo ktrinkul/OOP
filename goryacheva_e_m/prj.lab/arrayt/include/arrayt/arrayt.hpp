@@ -136,8 +136,3 @@ public:
 };
 
 #endif
-
-int main() {
-    int a = 5;
-    ArrayT<int> c(a);
-}
