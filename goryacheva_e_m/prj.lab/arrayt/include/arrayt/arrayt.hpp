@@ -1,138 +1,162 @@
 #pragma once
-#ifndef ARRAYT_ARRAYT_HPP_20230215
-#define ARRAYT_ARRAYT_HPP_20230215
-
-#include <cstddef>
+#ifndef ARRAYT_ARRAYT_HPP_20230520
+#define ARRAYT_ARRAYT_HPP_20230520
 #include <iostream>
+#include <iosfwd>
 #include <algorithm>
-#include <stdexcept>
-#include <iterator>
-#include <vector>
 
-template<typename Type>
+template<typename T>
 class ArrayT {
 public:
-	ArrayT(const std::ptrdiff_t size) {
-		if (size < 0) throw std::invalid_argument("size can't be < 0");
 
-		if (size > 0) {
-			this->size_ = size;
-			arr = new Type[size];
-			std::fill_n(arr, size, 0);
-			this->capacity_ = size;
-		}
-	}
+	ArrayT(const ArrayT& a);
+	explicit ArrayT(const ptrdiff_t size = 0);
+	ArrayT& operator=(const ArrayT& a);
 
-	ArrayT(const ArrayT& other) :ArrayT(static_cast<int>(other.size_)) {
-		if (other.size_ > this->size_) {
-			std::copy(other.arr, other.arr + other.size_, this->arr);
-			this->size_ = other.size_;
-		}
-		else {
-			std::copy(other.arr, other.arr + other.size_, this->arr);
-			this->size_ = other.size_;
-		}
-	}
+	~ArrayT();
 
-	ArrayT& operator=(const ArrayT& other) {
+	T& operator[](const ptrdiff_t i);
+	const T& operator[](const ptrdiff_t i) const;
 
-		if (other.size_ > this->size_) {
-			this->resize(other.size_);
-			std::copy(other.arr, other.arr + other.size_, this->arr);
-			this->size_ = other.size_;
-		}
-		else {
-			this->resize(other.size_);
-			std::copy(other.arr, other.arr + other.size_, this->arr);
-		}
-		return *this;
-	}
+	ptrdiff_t ssize() const noexcept;
 
-	ArrayT(std::initializer_list<Type> lst) :ArrayT(static_cast<int>(lst.size())) {
-		std::copy(lst.begin(), lst.end(), arr);
-		this->size_ = lst.size();
-	}
+	void resize(const ptrdiff_t size);
 
-	std::ptrdiff_t ssize()  const noexcept { return this->size_; }
+	void insert(const ptrdiff_t i, const T value);
 
+	void remove(const ptrdiff_t i);
 
-	void resize(const std::ptrdiff_t new_size) {
-		if (new_size <= 0) throw std::invalid_argument("size can't be <= 0");
-		Type* tmparr;
-		if (new_size < this->size_) {
-			std::fill_n(this->arr + new_size, this->size_ - new_size, 0);
-			std::cout << std::endl;
-			for (int count{ 0 }; count < size_; ++count)
-				std::cout << this->arr[count] << ' ';
-			std::cout << std::endl;
-			if (new_size <= (capacity_ / 2)) {
-				tmparr = new Type[new_size];
-				std::copy_n(this->arr, new_size, tmparr);
-				this->capacity_ = new_size;
-				std::cout << std::endl;
-				for (int count{ 0 }; count < size_; ++count)
-					std::cout << this->arr[count] << ' ';
-				std::cout << std::endl;
-				delete[] this->arr;
-				this->arr = tmparr;
-				tmparr = nullptr;
-			}
-			this->size_ = new_size;
-		}
-		else {
-			if (new_size > this->capacity_) {
-				auto new_capacity = capacity_ * 2;
-				if (new_size > new_capacity) {
-					new_capacity = new_size;
-				}
-				tmparr = new Type[new_size];
-				std::fill_n(tmparr, new_size, 0);
-				std::copy_n(this->arr, this->size_, tmparr);
-				this->capacity_ = new_capacity;
-				delete[] arr;
-				this->arr = tmparr;
-				this->size_ = new_size;
-				tmparr = nullptr;
-			}
-		}
-	}
-
-	void insert(const std::ptrdiff_t index, const Type value) {
-		if (index < 0 || index > this->size_) throw std::out_of_range("index out of range [0,size]");
-		if (this->size_ == this->capacity_) {
-			this->resize(this->size_ + 1);
-		}
-		for (ptrdiff_t i = this->size_ - 1; i >= index; i--) {
-			this->arr[i + 1] = this->arr[i];
-		}
-		this->arr[index] = value;
-		this->size_;
-	}
-
-	void remove(const std::ptrdiff_t index) {
-		if (index < 0 || index >= this->size_) throw std::out_of_range("index out of range [0,size)");
-
-		for (ptrdiff_t i = index; i < this->size_; i++) {
-			this->arr[i] = this->arr[i + 1];
-		}
-		this->resize(this->size_ - 1);
-	}
-
-
-	Type& operator[](const std::ptrdiff_t index) {
-		if (index < 0 || index >= this->size_) throw std::out_of_range("index out of range [0,size)");
-		return this->arr[index];
-	}
-
-	const Type& operator[](const std::ptrdiff_t index) const {
-		if (index < 0 || index >= this->size_) throw std::out_of_range("index out of range [0,size)");
-		return this->arr[index];
-	}
-
-    private:
-        ptrdiff_t size_ = 0;
-        ptrdiff_t capacity_;
-        Type* arr;
+private:
+	ptrdiff_t size_ = 0;
+	ptrdiff_t capacity_ = 0;
+	T* data_ = nullptr;
 };
+
+template<typename T>
+inline ArrayT<T>::ArrayT(const ArrayT& a) {
+	size_ = a.size_;
+	capacity_ = a.capacity_;
+	data_ = nullptr;
+	if (size_ != 0) {
+		data_ = new T[capacity_];
+		for (ptrdiff_t i = 0; i < size_ && i < capacity_; ++i) {
+			data_[i] = a.data_[i];
+		}
+	}
+	else data_ = nullptr;
+}
+
+template<typename T>
+inline ArrayT<T>::ArrayT(const ptrdiff_t size) {
+	if (size < 0) {
+		throw std::invalid_argument("Size can't be less than 0");
+	}
+	else {
+		size_ = size;
+		capacity_ = size;
+		if (size_ != 0) {
+			data_ = new T[capacity_];
+			for (ptrdiff_t i = 0; i < size_; ++i) data_[i] = T();
+		}
+		else data_ = nullptr;
+	}
+}
+
+template<typename T>
+inline ArrayT<T>& ArrayT<T>::operator=(const ArrayT& a) {
+	if (data_ != a.data_) {
+		size_ = a.size_;
+		capacity_ = a.capacity_;
+		delete[] data_;
+		data_ = nullptr;
+		if (size_ != 0) {
+			data_ = new T[capacity_];
+			for (ptrdiff_t i = 0; i < size_ && i < capacity_; ++i) {
+				data_[i] = a.data_[i];
+			}
+		}
+		else data_ = nullptr;
+	}
+	return *this;
+}
+
+template<typename T>
+inline ArrayT<T>::~ArrayT() {
+	if (data_) {
+		delete[] data_;
+		data_ = nullptr;
+	}
+}
+
+template<typename T>
+inline T& ArrayT<T>::operator[](const ptrdiff_t i) {
+	if (i >= size_ || i < 0) throw std::out_of_range("Index out of range");
+	else return data_[i];
+}
+
+template<typename T>
+inline const T& ArrayT<T>::operator[](const ptrdiff_t i) const
+{
+	if (i >= size_ || i < 0) throw std::out_of_range("Index out of range");
+	else return data_[i];
+}
+
+template<typename T>
+inline ptrdiff_t ArrayT<T>::ssize() const noexcept
+{
+	return size_;
+}
+
+template<typename T>
+inline void ArrayT<T>::resize(const ptrdiff_t size)
+{
+	if (size <= 0) {
+		throw std::invalid_argument("New size can't be less than 0");
+	}
+	else {
+		if (size > capacity_) {
+			ptrdiff_t new_size = size;
+			ptrdiff_t new_capacity = std::max(new_size, size_ * 2);
+			T* new_dater = new T[new_capacity];
+			for (ptrdiff_t i = 0; i < size_ && i < new_capacity; ++i) {
+				new_dater[i] = data_[i];
+			}
+			delete[] data_;
+			data_ = new_dater;
+			capacity_ = new_capacity;
+		}
+		for (ptrdiff_t i = size_; i < size && i < capacity_; ++i) {
+			data_[i] = T();
+		}
+		size_ = size;
+	}
+}
+
+template<typename T>
+inline void ArrayT<T>::insert(const ptrdiff_t i, const T value)
+{
+	if (i > size_ || i < 0) throw std::out_of_range("invalid_argument");
+	else
+	{
+		resize(size_ + 1);
+		data_[size_ - 1] = value;
+		for (ptrdiff_t j = size_ - 1; j > i; --j)
+		{
+			std::swap(data_[j], data_[j - 1]);
+		}
+	}
+}
+
+template<typename T>
+inline void ArrayT<T>::remove(const ptrdiff_t i) {
+	if (i >= size_ || i < 0) throw std::out_of_range("Index out of range");
+	else {
+		for (ptrdiff_t j = i; j < size_ - 1; ++j)
+		{
+			std::swap(data_[j], data_[j + 1]);
+		}
+		--size_;
+	}
+}
 
 #endif

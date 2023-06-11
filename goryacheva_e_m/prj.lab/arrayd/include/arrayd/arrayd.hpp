@@ -8,11 +8,15 @@
 #include <stdexcept>
 #include <iterator>
 #include <vector>
+#include <iosfwd>
 
 class ArrayD {
 public:
     explicit ArrayD(const std::ptrdiff_t size = 0);
-    ~ArrayD();
+
+    ~ArrayD() {
+        delete arr;
+    };
 
     ArrayD(const ArrayD&);
     ArrayD& operator=(const ArrayD&);
@@ -32,8 +36,8 @@ public:
 
     private:
         ptrdiff_t size_ = 0;
-        ptrdiff_t capacity_;
-        double* arr;
+        ptrdiff_t capacity_ = 0;
+        double* arr = nullptr;
 };
 
 #endif
